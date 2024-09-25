@@ -15,25 +15,26 @@ import java.util.Set;
 @Entity
 public class Account {
 
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-     private String email;
-     private String password;
-     private String firstname;
-     private String lastname;
+    private String email;
+    private String password;
+    private String firstname;
+    private String lastname;
 
-     private String role;
+    private String role;
 
-     @OneToMany(mappedBy = "account")
-     private List<Post> posts;
+    @OneToMany(mappedBy = "account")
+    private List<Post> posts;
 
-     @ManyToMany(fetch = FetchType.EAGER)
-     @JoinTable(
-            name = "account_authority",
-            joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")}
-     )
-     private Set<Authority> authorities=new HashSet<>();
+    // M:N의 관계는 테이블이 필요하므로 JoinTable
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+           name = "account_authority",
+           joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
+           inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")}
+    )
+    private Set<Authority> authorities=new HashSet<>();
 }

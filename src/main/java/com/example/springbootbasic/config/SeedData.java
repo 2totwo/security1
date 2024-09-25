@@ -26,15 +26,16 @@ public class SeedData implements CommandLineRunner {
 
     private final AuthorityService authorityService;
 
+    // 자동실행 -> 초기화하기 위해
     @Override
     public void run(String... args) throws Exception {
 
-              for(Privileges auth : Privileges.values()){
-                  Authority authority=new Authority();
-                  authority.setId(auth.getId());
-                  authority.setName(auth.getPrivilege());
-                  authorityService.save(authority);
-              }
+         for(Privileges auth : Privileges.values()){
+             Authority authority=new Authority();
+             authority.setId(auth.getId());
+             authority.setName(auth.getPrivilege());
+             authorityService.save(authority);
+         }
 
         Account account01 = new Account();
         Account account02 = new Account();
@@ -46,12 +47,11 @@ public class SeedData implements CommandLineRunner {
         account01.setFirstname("User");
         account01.setLastname("lastname");
 
-
         account02.setEmail("admin@admin.com");
         account02.setPassword("pass987");
         account02.setFirstname("Admin");
         account02.setLastname("lastname");
-        account02.setRole(Roles.ADMIN.getRole());
+        account02.setRole(Roles.ADMIN.getRole()); // "ROLE_ADMIN"
 
         account03.setEmail("editor@editor.com");
         account03.setPassword("pass987");

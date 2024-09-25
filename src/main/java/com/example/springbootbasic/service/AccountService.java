@@ -31,8 +31,10 @@ public class AccountService  implements UserDetailsService {
          // 비밀번호 암호화
          account.setPassword(passwordEncoder.encode(account.getPassword()));
          // 권한추가
-         if(account.getRole()==null) {
-             account.setRole(Roles.USER.getRole());
+         // ROLE_USER, ROLE_ADMIN, ROLE_EDITOR
+         if(account.getRole()==null) { // 롤이 없으면
+             // account.setRole(Roles.USER.getRole());
+             account.setRole("ROLE_USER");
          }
          return accountRepository.save(account);
      }
