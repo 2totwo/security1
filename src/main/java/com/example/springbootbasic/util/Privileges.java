@@ -1,5 +1,5 @@
 package com.example.springbootbasic.util;
-// Privileges : 특권
+// Privileges : 특권, 권한
 public enum Privileges {
 
     RESET_ANY_USER_PASSWORD(1L, "RESET_ANY_USER_PASSWORD"),

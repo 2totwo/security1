@@ -13,10 +13,18 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
+                    <span sec:authorize="isAuthenticated()"> <!-- 인증 성공시 -->
+                    <li class="nav-item">
+                        <span th:text="${#authentication.principal.username}">회원의 email</span> <!-- session에 있는 메모리 값에 접근 -->
+                    </li>
+                    <li class="nav-item">
+                        <span th:each="auth : ${#authentication.authorities}" th:text="${auth.authority}"></span>
+                    </li>
+                   </span>
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
                     </li>
-                    <span sec:authorize="!isAuthenticated()">
+                    <span sec:authorize="!isAuthenticated()"> <!-- 인증 실패시 -->
                     <li class="nav-item">
                         <a class="nav-link" href="/register">Register</a>
                     </li>
@@ -26,7 +34,7 @@
                         <a class="nav-link" href="/login">Login</a>
                     </li>
                     </span>
-                    <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="isAuthenticated()"> <!-- 인증 성공시 -->
                     <li class="nav-item">
                         <a class="nav-link" href="/profile">Profile</a>
                     </li>
@@ -36,17 +44,17 @@
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
                     </span>
-                    <span sec:authorize="hasRole('ROLE_ADMIN')">
+                    <span sec:authorize="hasRole('ROLE_ADMIN')"> <!-- 해당 역할일 경우 -->
                     <li class="nav-item">
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                     </span>
-                    <span sec:authorize="hasAuthority('ACCESS_ADMIN_PANEL')">
+                    <span sec:authorize="hasAuthority('ACCESS_ADMIN_PANEL')"> <!-- 해당 권한이 있는 경우 -->
                     <li class="nav-item">
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                     </span>
-                    <span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')">
+                    <span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')"> <!-- 해당 역할 중 하나라도 있는 경우 -->
                     <li class="nav-item">
                         <a class="nav-link" href="/editor">Editor</a>
                     </li>

@@ -15,20 +15,20 @@ public class AccountController {
 
     private final AccountService accountService;
 
-     @GetMapping("/register")
-     public String register(Model model){
-         Account account=new Account();
-         model.addAttribute("account", account);
-         return "register";
-     }
+    @GetMapping("/register")
+    public String register(Model model){
+        Account account=new Account();
+        model.addAttribute("account", account);
+        return "register";
+    }
 
-     @PostMapping("/register")
+    @PostMapping("/register")
     public String register(@ModelAttribute Account account){
               accountService.save(account);
               return "redirect:/";
-     }
+    }
 
-     @GetMapping("/login")
+    @GetMapping("/login")
     public String login(Model model){
          return "login";
      }

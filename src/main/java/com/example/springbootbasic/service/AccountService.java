@@ -24,7 +24,7 @@ public class AccountService  implements UserDetailsService {
 
      private final AccountRepository accountRepository;
 
-     private final PasswordEncoder passwordEncoder;
+     private final PasswordEncoder passwordEncoder; // 암호화 객체
 
      // 회원등록
      public Account save(Account account){
@@ -43,20 +43,37 @@ public class AccountService  implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<Account> optionalAccount=accountRepository.findOneByEmailIgnoreCase(email);
+        Optional<Account> optionalAccount=accountRepository.findOneByEmailIgnoreCase(email); // IgnoreCase: 대소문자 구별x
         if(!optionalAccount.isPresent()){
               throw  new UsernameNotFoundException("Account not found");
         }
+        // '1','user@user.com','User','lastname','$2a$10$dI1HPsrdaTy6FT4GAkQeAOaiLhgei0yg4omTHqpcNsfZHY4bqT/yO','ROLE_USER'
+        // 역할 : "ROLE_USER" -> String을 GrantedAuthority("ROLE_USER")로 넣어주어야 함
+
+        // '4','super_editor@editor.com',Editor','lastname',''$2a$10$7LRqphzDVNceXrYLrEYObuNFeDh1diiDgVXuehp3JC4ND7kv5dwVq',''ROLE_EDITOR'
+        // ["ROLE_EDITOR","RESET_ANY_USER_PASSWORD","ACCESS_ADMIN_PANEL"]
+        // -> [GrantedAuthority("ROLE_EDITOR"), GrantedAuthority("RESET_ANY_USER_PASSWORD"), GrantedAuthority("ACCESS_ADMIN_PANEL")]으로 변경해주어야 함
+
         Account account=optionalAccount.get();
+        // Security가 확인 : 패스워드가 일치하면 인증 성공
+        // HttpSession session = request.getSession();
+        // session.setAttribute("account", account); -> Spring Security는 방식으로 진행되지 않는다
+
 
         // 권한 부여하기
         List<GrantedAuthority> grantedAuthorityList=new ArrayList<>();
         grantedAuthorityList.add(new SimpleGrantedAuthority(account.getRole()));
 
-         for(Authority _auth :  account.getAuthorities()){
+        for(Authority _auth :  account.getAuthorities()){
              grantedAuthorityList.add(new SimpleGrantedAuthority(_auth.getName()));
-         }
+        }
         System.out.println(grantedAuthorityList.toString());
+        // return 전에 패스워드 체크가 이루어짐
+        // 1. 실패시 로그인 페이지로
+        // 2-1. 성공시 SecurityContextHolder(Session)객체를 생성
+        // 2-2. Authentication 객체를 생성하고 이 객체에 로그인 성공정보를 담아둔다.
+        // return type이 UserDetails임
+        // return email, pw, 권한정보
         return new User(account.getEmail(), account.getPassword(), grantedAuthorityList);
     }
 }

@@ -77,11 +77,11 @@ public class SeedData implements CommandLineRunner {
         // 데이터 초기화....
                List<Post> posts=postService.getAll();
                if(posts.size()==0){
-                    Post post01=new Post();
-                    post01.setTitle("Post 01");
-                    post01.setBody("Post 01 body........................");
-                    post01.setAccount(account01);
-                    postService.save(post01);
+                   Post post01=new Post();
+                   post01.setTitle("Post 01");
+                   post01.setBody("Post 01 body........................");
+                   post01.setAccount(account01);
+                   postService.save(post01);
 
                    Post post02=new Post();
                    post02.setTitle("Post 02");

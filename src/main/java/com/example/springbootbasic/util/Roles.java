@@ -1,5 +1,5 @@
 package com.example.springbootbasic.util;
-// 권한
+// 역할
 public enum Roles {
     // USER- 메서드, USER() - 생성자 메서드
     USER("ROLE_USER"), ADMIN("ROLE_ADMIN"), EDITOR("ROLE_EDITOR");
@@ -10,4 +10,6 @@ public enum Roles {
     public String getRole(){ // -> Roles.USER.getRole() : ROLE_USER
         return role;
     }
+    // Roles.USER.getRole()
 }
+
